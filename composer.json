@@ -1,0 +1,25 @@
+{
+    "name": "odino/exphpress",
+    "description": "The missing, elegant, productive microframework for PHP, inspired by ExpressJS.",
+    "autoload": {
+        "psr-4": {
+            "Exphpress\\": ["src/"]
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    },
+    "require": {
+        "symfony/http-foundation": "~2.5"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "odino",
+            "email": "alessandro.nadalin@gmail.com"
+        }
+    ]
+}
