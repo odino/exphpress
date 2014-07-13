@@ -29,7 +29,35 @@ clone this repository and run `php -S localhost:4000 examples/simple.php`.
 
 ## Getting fancy
 
+Matching a GET request is quite simple:
+
+``` php
+<?php
+
+$app = Exphpress\app();
+
+$app->get("/call-me-maybe/{name}", function($req, $res){
+    $res->setContent("Hey, I just matched you, and this is crazy...");
+});
+```
+
+The above route will be matched when we issue a `GET` request to our
+webserver that matches the path `/call-me-maybe/{name}`.
+
+The same can be done for post and all other HTTP methods.
+
 ## Write your own middleware
+
+Middlewares play a big part in a microframework's architecture:
+
+``` php
+$app->uses(function($req, $res){
+    if ($todayIsABadDay) {
+        $res->setStatusCode(403);
+        $res->setContent(null);
+    }
+});
+```
 
 ## Installation
 

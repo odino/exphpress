@@ -9,6 +9,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 /**
  * The Exphpress application, our main
@@ -45,7 +46,42 @@ class App
         $this->response     = $res ?: new Response();
     }
     
+    /**
+     * Registers a GET route.
+     */
     public function get($path, \Closure $callback)
+    {
+        $this->registerRoute('GET', $path, $callback);
+    }
+    
+    /**
+     * Registers a POST route.
+     */
+    public function post($path, \Closure $callback)
+    {
+        $this->registerRoute('POST', $path, $callback);
+    }    
+    
+    /**
+     * Registers a PUT route.
+     */
+    public function put($path, \Closure $callback)
+    {
+        $this->registerRoute('PUT', $path, $callback);
+    }    
+    
+    /**
+     * Registers a DELETE route.
+     */
+    public function delete($path, \Closure $callback)
+    {
+        $this->registerRoute('DELETE', $path, $callback);
+    }
+    
+    /**
+     * Registers a route.
+     */
+    protected function registerRoute($method, $path, \Closure $callback)
     {
         $routes             = new RouteCollection();
         $route              = new Route(
@@ -55,9 +91,9 @@ class App
             array(), 
             null, 
             array(), 
-            array('GET')
+            array($method)
         );
-        $routes->add('GET_' . $path, $route);
+        $routes->add($method . '_' . $path, $route);
         
         $context            = new RequestContext();
         $context->fromRequest($this->request);
@@ -69,9 +105,17 @@ class App
                 if ($matcher->match($req->getPathInfo())) {
                     $res->setStatusCode(Response::HTTP_OK);
                     $callback($req, $res, $next);
+                } else {
+                    $next();
                 }
             } catch (ResourceNotFoundException $e) {
                 $res->setStatusCode(Response::HTTP_NOT_FOUND);
+                $next();
+            } catch (MethodNotAllowedException $e) {
+                $res->setStatusCode(Response::HTTP_METHOD_NOT_ALLOWED);
+                $next();
+            } catch (\Exception $e) {
+                $res->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
                 $next();
             }
         };
@@ -117,9 +161,9 @@ class App
     protected function process()
     {
         if (count($this->stack)) {
-            $callback   = array_shift($this->stack);
             $app        = $this;
-            
+            $callback   = array_shift($this->stack);
+
             $callback->__invoke($this->request, $this->response, function() use ($app) {
                 return $app->process();
             });
