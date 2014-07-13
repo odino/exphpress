@@ -44,7 +44,7 @@ $app->get("/call-me-maybe/{name}", function($req, $res){
 The above route will be matched when we issue a `GET` request to our
 webserver that matches the path `/call-me-maybe/{name}`.
 
-The same can be done for post and all other HTTP methods.
+The same can be done for post and all other [HTTP methods](https://github.com/odino/exphpress/blob/master/src/App.php#L52-L76).
 
 ## Write your own middleware
 
