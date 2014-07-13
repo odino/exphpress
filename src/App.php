@@ -14,12 +14,12 @@ class App
     /**
      * @var \Symfony\Component\HttpFoundation\Request
      */
-    protected $request;
+    public $request;
     
     /**
      * @var \Symfony\Component\HttpFoundation\Response
      */
-    protected $response;
+    public $response;
     
     /**
      * Constructor that simply sets req/res in internal
@@ -28,10 +28,10 @@ class App
      * @param Symfony\Component\HttpFoundation\Request $req
      * @param Symfony\Component\HttpFoundation\Response $res
      */
-    public function __construct(Request $req, Response $res)
+    public function __construct(Request $req = null, Response $res = null)
     {
-        $this->request  = $req;
-        $this->response = $res;
+        $this->request  = $req ?: Request::createFromGlobals();
+        $this->response = $res ?: new Response();
     }
     
     /**
