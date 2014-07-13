@@ -51,13 +51,19 @@ The same can be done for post and all other HTTP methods.
 Middlewares play a big part in a microframework's architecture:
 
 ``` php
-$app->uses(function($req, $res){
+$app->uses(function($req, $res, $next){
     if ($todayIsABadDay) {
         $res->setStatusCode(403);
         $res->setContent(null);
+    } else {
+        $next();
     }
 });
 ```
+
+As you probably understood, the `$next` is a callback that invokes
+the following middleware, which means that you concatenate them at
+will (ie. look at [this test](https://github.com/odino/exphpress/blob/6e92cc453185199d2a878ae146b83c395e4bc19c/spec/Exphpress/AppSpec.php#L113-L138)).
 
 ## Installation
 
@@ -71,7 +77,7 @@ hack around exphpress simply clone this repository and check into
 greenland with a:
 
 ```
-TBD
+./vendor/bin/phpspec run
 ```
 
 ## License
