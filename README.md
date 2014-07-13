@@ -1,5 +1,7 @@
 # Exphpress
 
+[![Build Status](https://travis-ci.org/odino/exphpress.png?branch=master)](https://travis-ci.org/odino/exphpress)
+
 > The missing, elegant, productive microframework for
 > PHP, inspired by ExpressJS.
 >
