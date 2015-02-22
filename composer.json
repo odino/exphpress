@@ -11,7 +11,8 @@
     },
     "require": {
         "symfony/http-foundation": "~2.5",
-        "symfony/routing": "~2.5"
+        "symfony/routing": "~2.5",
+        "php": ">=5.4"
     },
     "require-dev": {
         "phpspec/phpspec": "*"
